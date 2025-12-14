@@ -38,7 +38,7 @@
     </style>
 </head>
 <body><center><div id="hode">
-<center><u><h2>HiMolde Printslip-report XML behandler</h2></u></center><br><br>
+<center><u><h2>Printslip-report XML fremviser</h2></u></center><br><br>
     <h3>  
 <label for="xmlFileInput">Last opp XML-fil:  </label>
     <input type="file" id="xmlFileInput" accept=".xml" onchange="handleFileSelect(event)" >
@@ -127,8 +127,8 @@
                 const fraBib = request.getElementsByTagName("library")[0].textContent;
                 const holding = request.getElementsByTagName("location")[0].textContent;
                 const tittel = request.getElementsByTagName("title")[0].textContent;
-                const ddk = request.getElementsByTagName("call_number")[0].textContent;
                 const aar = request.getElementsByTagName("publication_date")[0].textContent;
+                const ddk = request.getElementsByTagName("call_number")[0].textContent;
                 const dokid = request.getElementsByTagName("barcode")[0].textContent;
                 const note = request.getElementsByTagName("note")[0].textContent;
                 const nummer = i+1
@@ -161,11 +161,11 @@
                 tableBody.appendChild(newRow);
                 };
 
-            }
+            
             document.getElementById('status').textContent = `Har klart å laste ${requests.length} request'er.`;
             document.getElementById('status').classList.remove('error');
           
-        }
+        };}
              function restart() {
   
                     location.reload(); 
