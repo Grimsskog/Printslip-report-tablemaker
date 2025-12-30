@@ -3,11 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Printslip-report XML table-maker</title>
-    <style type="text/css" media="print">
-        .no-print {display: none;
-        }
-
-    </style>
     <style>
        
         table {
@@ -75,10 +70,24 @@
 box-shadow: 0 1px 2px 0 rgba(0,0,0,0.6);
 text-decoration: underline;
         }
-    
+#versjon {
+    float: right;
+    padding:2px;
+    font-size: x-small;
+}
+
+          @media print {
+   
+        @page  {
+  
+         size: landscape;
+        }
+        .no-print {display: none;
+        }
+    }
     </style>
 </head>
-<body><center><div id="hode">
+<body><div id="versjon" class="no-print">version 02.02 <br>last updated 30.12.25<br>by Grimsskog</div><center><div id="hode">
 <center><u><h2>Printslip-report XML table-maker</h2></u></center>
     <h3>  
     <label for="xmlFileInput">Upload XML-file</label>
@@ -105,6 +114,7 @@ text-decoration: underline;
                 <th>Title</th>
                 <th>Barcode</th>
                 <th>Destination</th>
+                <th>Requester no.</th>
                 <th>Request note</th>
             </tr>
         </thead>
@@ -114,6 +124,7 @@ text-decoration: underline;
     </table>
 </div>
     <script>
+         var uid = new Object();
         function handleFileSelect(event) {
             document.getElementById('tabell').style.display = 'block';
             document.getElementById('tabelloverskrift').style.display = 'block';
@@ -172,6 +183,16 @@ text-decoration: underline;
 
             for (let i = 0; i < requests.length; i++) {
                const request = requests[i];
+               let requseter_identi = request.getElementsByTagName("requester_identifiers")[0];
+                const requster_identif = requseter_identi.getElementsByTagName("identifier")[0];
+                const requester = requster_identif.getElementsByTagName("value")[0].textContent;
+                if (requester in uid){
+                    const ruid = uid[requester]
+                } else {
+                    uid[requester] = `${i+1}r`
+                    const ruid = uid[requester]
+                };
+                const ruid = uid[requester]
                 const tilBib = request.getElementsByTagName("pickup_at")[0].textContent;
                 const fraBib = request.getElementsByTagName("library")[0].textContent;
                 const holding = request.getElementsByTagName("location")[0].textContent;
@@ -192,6 +213,7 @@ text-decoration: underline;
                     <td>${tittel+", "+aar}</td>
                     <td>${dokid}</td>
                     <td>Hold-shelf</td>
+                    <td>${ruid}</td>
                     <td>${note}</td>
                 `;
                 tableBody.appendChild(newRow);
@@ -204,6 +226,7 @@ text-decoration: underline;
                     <td>${tittel+", "+aar}</td>
                     <td>${dokid}</td>
                     <td>${tilBib}</td>
+                    <td>${ruid}</td>
                     <td>${note}</td>
                 `;
                 tableBody.appendChild(newRow);
